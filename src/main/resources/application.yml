@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: resilience4j-demo
+
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 10s
+        failure-rate-threshold: 50
+        event-consumer-buffer-size: 10
+        register-health-indicator: true
+    instances:
+      employee-service:
+       base-config: default   
+      
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+        loggerLevel: basic
